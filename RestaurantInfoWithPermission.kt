@@ -68,7 +68,6 @@ fun RestaurantInfoWithPermission(
 
     Box{
         RestaurantInfo_(
-            modifier = Modifier.verticalScroll(rememberScrollState()),
             currentLongitude = currentLongitude,
             currentLatitude = currentLatitude,
             restaurantId = restaurantId,

@@ -3,6 +3,7 @@ package com.sarang.restaurantinfotest.di.restauarnt_info_di
 import com.sarang.torang.GetRestaurantInfoUseCase
 import com.sarang.torang.RestaurantInfoData
 import com.sarang.torang.api.ApiRestaurant
+import com.sarang.torang.di.restaurant_info.toRestaurantInfoData
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
