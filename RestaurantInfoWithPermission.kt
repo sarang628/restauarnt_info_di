@@ -98,7 +98,8 @@ fun RestaurantInfoWithPermissionWithLocation(
         scope.launch(Dispatchers.IO) {
             val result = locationClient.lastLocation.await()
             locationInfo = if (result == null) { "No last known location. Try fetching the current location first" }
-            else { "Current location is \n" + "lat : ${result.latitude}\n long : ${result.longitude}\n" + "fetched at ${System.currentTimeMillis()}" }
+            else { "Current location is lat : ${result.latitude} long : ${result.longitude} fetched at ${System.currentTimeMillis()}" }
+            Log.d(tag, locationInfo)
             currentLatitude = result.latitude
             currentLongitude = result.longitude
         }
