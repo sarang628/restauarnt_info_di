@@ -4,8 +4,10 @@ import com.sarang.torang.BuildConfig
 import com.sarang.torang.HoursOfOperation
 import com.sarang.torang.RestaurantInfoData
 import com.sarang.torang.data.RestaurantDetail
+import com.sarang.torang.data.remote.response.HoursOfOperationApiModel
+import com.sarang.torang.data.remote.response.RestaurantDetailApiModel
 
-fun RestaurantDetail.toRestaurantInfoData(): RestaurantInfoData {
+fun RestaurantDetailApiModel.toRestaurantInfoData(): RestaurantInfoData {
     return RestaurantInfoData(
         foodType = this.restaurant.restaurantType ?: "",
         open = "영업 중",
@@ -24,7 +26,7 @@ fun RestaurantDetail.toRestaurantInfoData(): RestaurantInfoData {
     )
 }
 
-fun com.sarang.torang.data.HoursOfOperation.toHoursOfOperation(): HoursOfOperation {
+fun HoursOfOperationApiModel.toHoursOfOperation(): HoursOfOperation {
     return HoursOfOperation(
         day = this.day,
         startTime = this.start_time,
