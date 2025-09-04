@@ -94,16 +94,22 @@ fun RestaurantInfoWithPermissionWithLocation(
     var currentLatitude : Double? by remember { mutableStateOf(null) }
     var currentLongitude : Double? by remember { mutableStateOf(null) }
 
-    RestaurantInfoWithPermission(viewModel = BestPracticeViewModel(), currentLatitude = currentLatitude, currentLongitude = currentLongitude, restaurantId = restaurantId ,onRequestLocation = {
-        scope.launch(Dispatchers.IO) {
+    RestaurantInfoWithPermission(viewModel = BestPracticeViewModel(),
+        currentLatitude = currentLatitude,
+        currentLongitude = currentLongitude,
+        restaurantId = restaurantId ,
+        onRequestLocation = { scope.launch(Dispatchers.IO) {
             val result = locationClient.lastLocation.await()
             locationInfo = if (result == null) { "No last known location. Try fetching the current location first" }
             else { "Current location is lat : ${result.latitude} long : ${result.longitude} fetched at ${System.currentTimeMillis()}" }
             Log.d(tag, locationInfo)
             currentLatitude = result.latitude
             currentLongitude = result.longitude
-        }
-    })
+        } },
+        onLocation = onLocation,
+        onWeb = onWeb,
+        onCall = onCall
+    )
 }
 
 val restaurantInfo: RestaurantInfo = { restaurantId, onLocation, onWeb, onCall ->
