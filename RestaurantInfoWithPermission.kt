@@ -14,7 +14,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.sarang.torang.RestaurantInfo_
+import com.sarang.torang.RestaurantInfoScreen
 import com.sryang.library.compose.workflow.BestPracticeViewModel
 import com.sryang.library.compose.workflow.MoveSystemSettingDialog
 import com.sryang.library.compose.workflow.PermissonWorkFlow.CheckRationale
@@ -56,7 +56,7 @@ fun RestaurantInfoWithPermission(
     }
 
     Box{
-        RestaurantInfo_(
+        RestaurantInfoScreen(
             currentLongitude = currentLongitude,
             currentLatitude = currentLatitude,
             restaurantId = restaurantId,
