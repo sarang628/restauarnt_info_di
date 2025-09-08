@@ -1,6 +1,5 @@
 package com.sarang.torang.di.restauarnt_info_di
 
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,21 +17,18 @@ import kotlinx.coroutines.tasks.await
 @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
 fun RequestLocationBox(
     tag                 : String            = "__RequestLocationBox",
-    contents : @Composable (Double?, Double?, ()->Unit)->Unit = {_,_,_->}
+    contents : @Composable (Pair<Double, Double>?, ()->Unit)->Unit = { _, _->}
 ){
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val locationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     var locationInfo by remember { mutableStateOf("") }
-    var currentLatitude : Double? by remember { mutableStateOf(null) }
-    var currentLongitude : Double? by remember { mutableStateOf(null) }
+    var currentLocation : Pair<Double, Double>? by remember { mutableStateOf(null) }
 
-    contents.invoke(currentLongitude, currentLongitude, { scope.launch(Dispatchers.IO) {
+    contents.invoke(currentLocation, { scope.launch(Dispatchers.IO) {
         val result = locationClient.lastLocation.await()
         locationInfo = if (result == null) { "No last known location. Try fetching the current location first" }
         else { "Current location is lat : ${result.latitude} long : ${result.longitude} fetched at ${System.currentTimeMillis()}" }
-        Log.d(tag, locationInfo)
-        currentLatitude = result.latitude
-        currentLongitude = result.longitude
+        currentLocation = Pair(result.latitude, result.longitude)
     }})
 }
