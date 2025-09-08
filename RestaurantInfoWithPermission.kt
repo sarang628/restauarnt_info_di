@@ -3,25 +3,17 @@ package com.sarang.torang.di.restaurant_info
 import android.Manifest
 import android.util.Log
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.google.android.gms.location.LocationServices
-import com.sarang.torang.RestaurantInfo
 import com.sarang.torang.RestaurantInfo_
 import com.sryang.library.compose.workflow.BestPracticeViewModel
 import com.sryang.library.compose.workflow.MoveSystemSettingDialog
@@ -33,23 +25,20 @@ import com.sryang.library.compose.workflow.PermissonWorkFlow.RecognizeToUser
 import com.sryang.library.compose.workflow.PermissonWorkFlow.RequestPermission
 import com.sryang.library.compose.workflow.PermissonWorkFlow.ShowRationale
 import com.sryang.library.compose.workflow.PermissonWorkFlow.SuggestSystemSetting
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantInfoWithPermission(
-    tag: String = "__RestaurantInfoWithPermission",
-    viewModel: BestPracticeViewModel,
-    onRequestLocation : ()->Unit = {},
-    currentLatitude : Double? = null,
-    currentLongitude : Double? = null,
-    restaurantId : Int,
-    onLocation: () -> Unit = { Log.w(tag, "onLocation doesn't set") },
-    onWeb: (String) -> Unit = { Log.w(tag, "onWeb doesn't set") },
-    onCall: (String) -> Unit = { Log.w(tag, "onCall doesn't set") },
+    tag                     : String                    = "__RestaurantInfoWithPermission",
+    viewModel               : BestPracticeViewModel,
+    onRequestLocation       : ()->Unit                  = {},
+    currentLatitude         : Double?                   = null,
+    currentLongitude        : Double?                   = null,
+    restaurantId            : Int,
+    onLocation              : () -> Unit                = { Log.w(tag, "onLocation doesn't set") },
+    onWeb                   : (String) -> Unit          = { Log.w(tag, "onWeb doesn't set") },
+    onCall                  : (String) -> Unit          = { Log.w(tag, "onCall doesn't set") },
 ){
     var timeDiff : Long by remember { mutableLongStateOf(0L) } // 2번 권한 거부 시 시스템 이동 다이얼로그를 띄우는 조건
     val requestPermission = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION, { viewModel.permissionResult(it, System.currentTimeMillis() - timeDiff) })
@@ -78,40 +67,4 @@ fun RestaurantInfoWithPermission(
             onRequestPermission = { viewModel.request() }
         )
     }
-}
-
-@Composable
-fun RestaurantInfoWithPermissionWithLocation(
-    tag : String = "__RestaurantInfoWithPermissionWithLocation",
-    restaurantId : Int,
-    onLocation: () -> Unit = { Log.w(tag, "onLocation doesn't set") },
-    onWeb: (String) -> Unit = { Log.w(tag, "onWeb doesn't set") },
-    onCall: (String) -> Unit = { Log.w(tag, "onCall doesn't set") },) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val locationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
-    var locationInfo by remember { mutableStateOf("") }
-    var currentLatitude : Double? by remember { mutableStateOf(null) }
-    var currentLongitude : Double? by remember { mutableStateOf(null) }
-
-    RestaurantInfoWithPermission(viewModel = BestPracticeViewModel(),
-        currentLatitude = currentLatitude,
-        currentLongitude = currentLongitude,
-        restaurantId = restaurantId ,
-        onRequestLocation = { scope.launch(Dispatchers.IO) {
-            val result = locationClient.lastLocation.await()
-            locationInfo = if (result == null) { "No last known location. Try fetching the current location first" }
-            else { "Current location is lat : ${result.latitude} long : ${result.longitude} fetched at ${System.currentTimeMillis()}" }
-            Log.d(tag, locationInfo)
-            currentLatitude = result.latitude
-            currentLongitude = result.longitude
-        } },
-        onLocation = onLocation,
-        onWeb = onWeb,
-        onCall = onCall
-    )
-}
-
-val restaurantInfo: RestaurantInfo = { restaurantId, onLocation, onWeb, onCall ->
-    RestaurantInfoWithPermissionWithLocation(restaurantId = restaurantId, onLocation = onLocation, onWeb = onWeb, onCall = onCall)
 }
