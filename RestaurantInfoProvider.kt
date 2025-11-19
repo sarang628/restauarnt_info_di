@@ -5,16 +5,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sarang.torang.RestaurantInfo
-import com.sarang.torang.RestaurantInfoScreen
 import com.sarang.torang.RestaurantInfoViewModel
 import com.sryang.library.compose.workflow.BestPracticeViewModel
 
 @Composable
 @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
 fun restaurantInfo(viewModel : RestaurantInfoViewModel = hiltViewModel()): RestaurantInfo =
-    { restaurantId, onLocation, onWeb, onCall ->
+    {
         val uiState = viewModel.uiState
-        LaunchedEffect(restaurantId) { viewModel.fetchRestaurantInfo1(restaurantId) }
+        LaunchedEffect(it.restaurantId) { viewModel.fetchRestaurantInfo1(it.restaurantId) }
         RequestLocationBox { currentLocation, onRequestLocation ->
             PermissionBox(BestPracticeViewModel(), onRequestLocation) { isGranted, request ->
                 LaunchedEffect(currentLocation) {
@@ -23,9 +22,7 @@ fun restaurantInfo(viewModel : RestaurantInfoViewModel = hiltViewModel()): Resta
                 RestaurantInfo(
                     uiState = uiState,
                     isLocationPermissionGranted = isGranted,
-                    onLocation = onLocation,
-                    onWeb = onWeb,
-                    onCall = onCall,
+                    onLocation = it.onLocation,
                     onRequestPermission = { request() }
                 )
             }
