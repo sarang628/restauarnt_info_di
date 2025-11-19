@@ -24,8 +24,6 @@ fun restaurantInfo(viewModel : RestaurantInfoViewModel = hiltViewModel()): Resta
                     uiState = uiState,
                     isLocationPermissionGranted = isGranted,
                     onLocation = it.onLocation,
-                    onWeb = it.onWeb,
-                    onCall = it.onCall,
                     onRequestPermission = { request() }
                 )
             }

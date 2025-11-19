@@ -15,8 +15,6 @@ fun restaurantInfoScreen(): RestaurantInfo =
                     restaurantId = it.restaurantId,
                     isLocationPermissionGranted = isGranted,
                     onLocation = it.onLocation,
-                    onWeb = it.onWeb,
-                    onCall = it.onCall,
                     onRequestPermission = { request() }
                 )
             }
