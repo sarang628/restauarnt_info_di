@@ -7,16 +7,16 @@ import com.sryang.library.compose.workflow.BestPracticeViewModel
 
 @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
 fun restaurantInfoScreen(): RestaurantInfo =
-    { restaurantId, onLocation, onWeb, onCall ->
+    {
         RequestLocationBox { currentLocation, onRequestLocation ->
             PermissionBox(BestPracticeViewModel(), onRequestLocation) { isGranted, request ->
                 RestaurantInfoScreen(
                     currentLocation = currentLocation,
-                    restaurantId = restaurantId,
+                    restaurantId = it.restaurantId,
                     isLocationPermissionGranted = isGranted,
-                    onLocation = onLocation,
-                    onWeb = onWeb,
-                    onCall = onCall,
+                    onLocation = it.onLocation,
+                    onWeb = it.onWeb,
+                    onCall = it.onCall,
                     onRequestPermission = { request() }
                 )
             }
