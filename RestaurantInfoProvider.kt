@@ -9,7 +9,6 @@ import com.sarang.torang.RestaurantInfoViewModel
 import com.sryang.library.compose.workflow.BestPracticeViewModel
 
 @Composable
-@RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
 fun restaurantInfo(viewModel : RestaurantInfoViewModel = hiltViewModel()): RestaurantInfo =
     {
         val uiState = viewModel.uiState
