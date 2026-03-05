@@ -3,7 +3,6 @@ package com.sarang.torang.di.restaurant_info
 import com.sarang.torang.BuildConfig
 import com.sarang.torang.HoursOfOperation
 import com.sarang.torang.RestaurantInfoData
-import com.sarang.torang.data.RestaurantDetail
 import com.sarang.torang.data.remote.response.HoursOfOperationApiModel
 import com.sarang.torang.data.remote.response.RestaurantDetailApiModel
 
@@ -22,7 +21,9 @@ fun RestaurantDetailApiModel.toRestaurantInfoData(): RestaurantInfoData {
         reviewCount = this.restaurant.reviewCount ?: 0,
         price = this.restaurant.prices ?: "",
         lon = this.restaurant.lon ?: 0.0,
-        lat = this.restaurant.lat ?: 0.0
+        lat = this.restaurant.lat ?: 0.0,
+        photoList = listOf(BuildConfig.RESTAURANT_IMAGE_SERVER_URL + this.restaurant.imgUrl1)
+                    .plus(this.pictures.filter { !(it.picture_url?.contains("m3u8") ?: true) }.map { BuildConfig.REVIEW_IMAGE_SERVER_URL + it.picture_url })
     )
 }
 
