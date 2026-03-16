@@ -2,7 +2,7 @@ package com.sarang.torang.di.restaurant_info
 
 import com.sarang.torang.BuildConfig
 import com.sarang.torang.HoursOfOperation
-import com.sarang.torang.RestaurantInfoData
+import com.sarang.torang.compose.restaurantinfo.RestaurantInfoData
 import com.sarang.torang.data.remote.response.HoursOfOperationApiModel
 import com.sarang.torang.data.remote.response.RestaurantDetailApiModel
 
